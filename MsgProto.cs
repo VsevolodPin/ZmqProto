@@ -6,16 +6,16 @@ using ProtoBuf;
 namespace Proto
 {
     /// <summary>
-    /// Обработчик сообщений с изображениями (ImgMessage).
+    /// Преобразователь кадров изображения в серилизованные сообщения (и обратно).
     /// </summary>
     public static class MsgProto
     {
         /// <summary>
-        /// Серилизовать сообщение с изображением в массив байт.
+        /// Серилизовать кадр изображения (объект класса ImgFrame) в массив байт.
         /// </summary>
-        /// <param name="imgMsg">Сообщение с изображением.</param>
-        /// <returns>Серилизованное сообщение.</returns>
-        public static byte[] Serialize(ImgMessage imgMsg)
+        /// <param name="imgMsg">Кадр изображения.</param>
+        /// <returns>Серилизованное сообщение (массив байт).</returns>
+        public static byte[] Serialize(ImgFrame imgMsg)
         {
             if (imgMsg == null) return null;
 
@@ -35,11 +35,11 @@ namespace Proto
         }
 
         /// <summary>
-        /// Десерилизовать сообщение с изображением из массива байт в полноценный класс.
+        /// Десерилизовать кадр изображения из массива байт в объект класса ImgFrame.
         /// </summary>
         /// <param name="serializedMsg">Серилизованное сообщение.</param>
-        /// <returns>Сообщение с изображением (ImgMessage).</returns>
-        public static ImgMessage Deserialize(byte[] serializedMsg)
+        /// <returns>Кадр изображения (объект ImgFrame).</returns>
+        public static ImgFrame Deserialize(byte[] serializedMsg)
         {
             if (serializedMsg == null) return null;
 
@@ -47,7 +47,7 @@ namespace Proto
             {
                 using (var stream = new MemoryStream(serializedMsg))
                 {
-                    return (ImgMessage) Serializer.Deserialize(typeof(ImgMessage), stream);
+                    return (ImgFrame) Serializer.Deserialize(typeof(ImgFrame), stream);
                 }
             }
             catch (Exception e)
@@ -58,20 +58,20 @@ namespace Proto
         }
         
         /// <summary>
-        /// Перевод byte[] изображения в string для передачи в ImgMessage.
+        /// Перевод кадра изображения из массива байт в бинарную строку для хранения в ImgFrame и последующей передачи.
         /// </summary>
-        /// <param name="bytes">Изображение.</param>
-        /// <returns>Строка данных.</returns>
+        /// <param name="bytes">Массив байт изображения.</param>
+        /// <returns>Бинарная строка.</returns>
         public static string ByteToStr(byte[] bytes)
         {
             return bytes != null ? Encoding.ASCII.GetString(bytes) : null;
         }
         
         /// <summary>
-        /// Обратный перевод string (строки данных) в byte[] изображения для последующей обработки с помощью openCV.
+        /// Перевод кадра изображения из бинарной строки в массив байт для последующей обработки с помощью openCV.
         /// </summary>
-        /// <param name="str">Строка данных.</param>
-        /// <returns>Изображение.</returns>
+        /// <param name="str">Бинарная строка.</param>
+        /// <returns>Массив байт изображения.</returns>
         public static byte[] StrToByte(string str)
         {
             return str != null ? Encoding.ASCII.GetBytes(str) : null;

@@ -69,7 +69,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="ImgMessage.cs" />
+        <Compile Include="ImgFrame.cs" />
         <Compile Include="MsgProto.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
