@@ -30,11 +30,11 @@ namespace Proto
         /// </summary>
         [ProtoMember(1)] public uint Number { get; set; }
         /// <summary>
-        /// Бинарная строка кадра исходного изображения (= null, если таких данных в этом кадре нет).
+        /// Бинарная строка исходного изображения (= null, если таких данных в этом кадре нет).
         /// </summary>
         [ProtoMember(2)] public string ImgReal { get; set; }
         /// <summary>
-        /// Бинарная строка кадра обработанного изображения (= null, если таких данных в этом кадре нет).
+        /// Бинарная строка обработанного изображения (= null, если таких данных в этом кадре нет).
         /// </summary>
         [ProtoMember(3)] public string ImgProcessed { get; set; }
 
@@ -42,7 +42,7 @@ namespace Proto
         
         // ЛОГИКА И МЕТОДЫ //
         
-        public ImgFrame() { } // конструктор для приёма по ZeroMQ (не используется явно)
+        public ImgFrame() { } // конструктор для десерилизации (не используется явно)
 
         public ImgFrame(uint number, ImgType type, byte[] data)
         {
