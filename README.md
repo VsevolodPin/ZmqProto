@@ -24,28 +24,28 @@ using Proto;
 
 
 ...
-byte[] serialized = MsgProto.Serialize(new ImgMessage(num, ImgType.Real, testImgBytes));
+byte[] serialized = MsgProto.Serialize(new ImgFrame(num, ImgType.Real, testImgBytes));
 ...
 // TODO: передача серилизованного сообщения по ZeroMQ.
 ...
-ImgMessage imgMsgReceived = MsgProto.Deserialize(serialized);
-byte[] imgForProcessing = imgMsgReceived.GetImg(ImgType.Real); // получен массив байт изображения, который необходимо обработать с помощью openCV.
+ImgFrame imgFrmReceived = MsgProto.Deserialize(serialized);
+byte[] imgForProcessing = imgFrmReceived.GetData(ImgType.Real); // получен массив байт изображения, который необходимо обработать с помощью openCV.
 ...
 // TODO: обработка кадра с помощью openCV.
 ...
-byte[] serialized2 = MsgProto.Serialize(new ImgMessage(imgMsgReceived.Frame, ImgType.Processed, imgProcessed));
+byte[] serialized2 = MsgProto.Serialize(new ImgFrame(imgFrmReceived.Number, ImgType.Processed, imgProcessed));
 ...
 // TODO: передача серилизованного сообщения по ZeroMQ.
 ...
-ImgMessage imgMsgReceived2 = MsgProto.Deserialize(serialized2);
-if (imgMsgReceived2.GetAvailableType() == ImgType.Real)
+ImgFrame imgFrmReceived2 = MsgProto.Deserialize(serialized2);
+if (imgFrmReceived2.GetAvailableType() == ImgType.Real)
   {
-     var res = imgMsgReceived2.GetImg(imgMsgReceived2.GetAvailableType()); //  такой способ позволяет получать массив байт кадра любого доступного изображения: исходного или обработанного (в данном случае будет получен кадр исходного изображения).
+     var res = imgFrmReceived2.GetData(imgFrmReceived2.GetAvailableType()); //  такой способ позволяет получать массив байт кадра любого доступного изображения: исходного или обработанного (в данном случае будет получен кадр исходного изображения).
      
      // TODO: действия, если получен кадр исходного изображения
   }
 ...
-if (imgMsgReceived2.GetAvailableType() == ImgType.Processed)
+if (imgFrmReceived2.GetAvailableType() == ImgType.Processed)
   {
     // TODO: действия, если получен кадр обработанного изображения
   }
@@ -57,30 +57,30 @@ using Proto;
 
 
 ...
-byte[] serialized = MsgProto.Serialize(new ImgMessage { Frame = num, ImgReal = MsgProto.ByteToStr(testImgBytes) });
+byte[] serialized = MsgProto.Serialize(new ImgFrame { Number = num, ImgReal = MsgProto.ByteToStr(testImgBytes) });
 ...
 // TODO: передача серилизованного сообщения по ZeroMQ.
 ...
-ImgMessage imgMsgReceived = MsgProto.Deserialize(serialized);
-byte[] imgForProcessing = MsgProto.StrToByte(imgMsgReceived.ImgReal); // получен массив байт изображения, который необходимо обработать с помощью openCV.
+ImgFrame imgFrmReceived = MsgProto.Deserialize(serialized);
+byte[] imgForProcessing = MsgProto.StrToByte(imgFrmReceived.ImgReal); // получен массив байт изображения, который необходимо обработать с помощью openCV.
 ...
 // TODO: обработка кадра с помощью openCV.
 ...
-byte[] serialized2 = MsgProto.Serialize(new ImgMessage { Frame = imgMsgReceived.Frame, ImgProcessed = MsgProto.ByteToStr(imgProcessed) });
+byte[] serialized2 = MsgProto.Serialize(new ImgFrame { Number = imgFrmReceived.Number, ImgProcessed = MsgProto.ByteToStr(imgProcessed) });
 ...
 // TODO: передача серилизованного сообщения по ZeroMQ.
 ...
-ImgMessage imgMsgReceived2 = MsgProto.Deserialize(serialized2);
-if (imgMsgReceived2.ImgReal != null)
+ImgFrame imgFrmReceived2 = MsgProto.Deserialize(serialized2);
+if (imgFrmReceived2.ImgReal != null)
   {
-     var res = MsgProto.StrToByte(imgMsgReceived2.ImgReal);
+     var res = MsgProto.StrToByte(imgFrmReceived2.ImgReal);
      
      // TODO: действия, если получен кадр исходного изображения
   }
 ...
-if (imgMsgReceived2.ImgProcessed != null)
+if (imgFrmReceived2.ImgProcessed != null)
   {
-    var res2 = MsgProto.StrToByte(imgMsgReceived2.ImgProcessed);
+    var res2 = MsgProto.StrToByte(imgFrmReceived2.ImgProcessed);
   
     // TODO: действия, если получен кадр обработанного изображения
   }
