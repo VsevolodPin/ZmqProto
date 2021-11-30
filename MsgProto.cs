@@ -64,7 +64,10 @@ namespace Proto
         /// <returns>Бинарная строка.</returns>
         public static string ByteToStr(byte[] bytes)
         {
-            return bytes != null ? Encoding.ASCII.GetString(bytes) : null;
+            if (bytes == null) return null;
+            var chars = new char[bytes.Length / sizeof(char)];
+            Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
         }
         
         /// <summary>
@@ -74,7 +77,10 @@ namespace Proto
         /// <returns>Массив байт изображения.</returns>
         public static byte[] StrToByte(string str)
         {
-            return str != null ? Encoding.ASCII.GetBytes(str) : null;
+            if (str == null) return null;
+            var bytes = new byte[str.Length * sizeof(char)];
+            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
         }
     }
 }
